@@ -1,8 +1,11 @@
 package com.americanairlines.a6thkotlintpexec
 
+import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 
-class RestaurantCustomer(private val customerName: String, private val timeToSpend: Int): Runnable {
+data class RestaurantCustomer(val customerName: String, val timeToSpend: Int, val handler:Handler): Runnable {
 
     private val pricePerMinute =  5
 
@@ -15,6 +18,13 @@ class RestaurantCustomer(private val customerName: String, private val timeToSpe
             Log.d("TAG_X", "$customerName is being saved.")
 
             totalCost += pricePerMinute
+
+            handler.sendMessage(Message().also {
+                it.data = Bundle().also { bnd ->
+                    bnd.putString("user_id", this.hashCode().toString())
+                    bnd.putInt("user_prog", ((i / timeToSpend.toDouble() * 100).toInt()))
+                }
+            })
 
         }
         Log.d("TAG_X", "$customerName is done. Bill is ${totalCost.convertToDollars()}")

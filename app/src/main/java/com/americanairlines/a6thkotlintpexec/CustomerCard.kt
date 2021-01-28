@@ -13,6 +13,19 @@ class CustomerCard(context: Context, val attributeSet: AttributeSet): CardView(c
 
     private lateinit var customerNameText: TextView
     private lateinit var serviceProgress: ProgressBar
+
+    var customerName: String
+    get() = customerNameText.text.toString()
+    set(value){
+        customerNameText.text = value
+    }
+
+    var progressLevel: Int
+    get() = serviceProgress.progress
+    set(value) {
+        serviceProgress.progress = value
+    }
+
     val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     init {
@@ -22,12 +35,13 @@ class CustomerCard(context: Context, val attributeSet: AttributeSet): CardView(c
 
         val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.CustomerCard)
 
-        val customerName = typedArray.getString(R.styleable.CustomerCard_CustomerName) ?: ""
-        val progressLevel = typedArray.getInt(R.styleable.CustomerCard_ServiceProgress, 0)
+        customerName = typedArray.getString(R.styleable.CustomerCard_CustomerName) ?: ""
+        progressLevel = typedArray.getInt(R.styleable.CustomerCard_ServiceProgress, 0)
 
         customerNameText.text = customerName
         serviceProgress.progress = progressLevel
     }
+
 
 }
 
